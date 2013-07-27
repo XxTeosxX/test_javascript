@@ -9,23 +9,26 @@ TeamsController.prototype.routes['update'] = {url: "/teams/:id(.:format)", metho
 TeamsController.prototype.routes['destroy'] = {url: "/teams/:id(.:format)", method: "DELETE" }; 
 
 function DJR(){
-	function sucess(){
+	var _sucess = function(){
 		alert('oia');
 	}
-	function error(){
+	var _error = function(){
 		alert('eita errou');
 	}
 
 	for (var action in this.routes){
 
-		this[action] = function(json,sucess, error){
-			$.ajax({
-				url:this.routes[action].url,
-				data: json,
-				type:this.routes[action].method,
-				sucess: sucess,
-				error: error
-			});
-		}
+		this[action] =(function(action){
+			return function(json,sucess,error){
+				$.ajax({
+					url:this.routes[action].url,
+					data: json,
+					type:this.routes[action].method,
+					sucess: _sucess,
+					error: _error
+				});
+			};
+		})(action);
+		
 	}
 }
